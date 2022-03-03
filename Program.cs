@@ -9,7 +9,7 @@ namespace Somewhere2
     {
         static void Main(string[] args)
         {
-            ApplicationWindow window = new ApplicationWindow();
+            Application window = new Application();
             window.Run();
         }
     }

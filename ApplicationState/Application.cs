@@ -6,10 +6,10 @@ using Somewhere2.Controls;
 
 namespace Somewhere2.ApplicationState
 {
-    public class ApplicationWindow
+    public class Application
     {
         #region Interface
-        public ApplicationWindow()
+        public Application()
         {
             InitializeWindow();
             InitializeWindowHandlers();

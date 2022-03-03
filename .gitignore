@@ -1,5 +1,8 @@
 # Folders
 Assets
+Publish
+
+# Building
 bin/
 obj/
 /packages/
