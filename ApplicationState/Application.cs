@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using SFML.Graphics;
+using SFML.System;
 using SFML.Window;
 using Somewhere2.BaseClasses;
 using Somewhere2.Controls;
@@ -20,7 +21,7 @@ namespace Somewhere2.ApplicationState
             while (AppWindow.IsOpen)
             {
                 AppWindow.Clear();
-                Draw();
+                DrawContents();
                 AppWindow.Display();
                 AppWindow.WaitAndDispatchEvents();
             }
@@ -37,10 +38,15 @@ namespace Somewhere2.ApplicationState
         private List<Control> Controls { get; set; }
         #endregion
 
+        #region States
+        private Vector2i MoveWindowAnchor { get; set; }
+        private bool MoveWindow { get; set; }
+        #endregion
+
         #region Private
         private void InitializeWindow()
         {
-            AppWindow = new RenderWindow(VideoMode.DesktopMode, WindowTitle);
+            AppWindow = new RenderWindow(new VideoMode(1024, 768), WindowTitle, Styles.None);
             BasicRenderingInfrastructure rendering = new BasicRenderingInfrastructure();
             rendering.Setup(AppWindow);
 
@@ -55,6 +61,8 @@ namespace Somewhere2.ApplicationState
         {
             AppWindow.Closed += (sender, eventArgs) => AppWindow.Close();
             AppWindow.MouseButtonPressed += AppWindowOnMouseButtonPressed;
+            AppWindow.MouseButtonReleased += AppWindowOnMouseButtonReleased;
+            AppWindow.MouseMoved += AppWindowOnMouseMoved;
         }
         private void InitializeDrawContexts()
         {
@@ -66,7 +74,7 @@ namespace Somewhere2.ApplicationState
                 control.Initialize(ApplicationContext);
             }
         }
-        private void Draw()
+        private void DrawContents()
         {
             // Draw current screen
             foreach (Control control in Controls)
@@ -81,8 +89,22 @@ namespace Somewhere2.ApplicationState
         {
             if (e.Button == Mouse.Button.Left)
             {
-                
+                MoveWindowAnchor = new Vector2i(e.X, e.Y);
+                MoveWindow = true;
             }
+        }
+        private void AppWindowOnMouseButtonReleased(object? sender, MouseButtonEventArgs e)
+        {
+            if (MoveWindow) MoveWindow = false;
+        }
+
+        private void AppWindowOnMouseMoved(object? sender, MouseMoveEventArgs e)
+        {
+            if (MoveWindow)
+            {
+                Vector2i current = new Vector2i(e.X, e.Y);
+                AppWindow.Position = AppWindow.Position + (current - MoveWindowAnchor);
+            } 
         }
         #endregion
     }
