@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using SFML.Graphics;
 
-namespace Somewhere2.ApplicationState
+namespace Somewhere2.GUIApplication
 {
     public class BasicRenderingInfrastructure
     {

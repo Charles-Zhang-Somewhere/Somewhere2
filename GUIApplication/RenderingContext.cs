@@ -1,8 +1,8 @@
 ﻿using SFML.Graphics;
 
-namespace Somewhere2.ApplicationState
+namespace Somewhere2.GUIApplication
 {
-    public class ApplicationContext
+    public class RenderingContext
     {
         public Application MainApplication { get; set; }
         public RenderWindow Window { get; set; }

@@ -2,6 +2,7 @@
 using SFML.System;
 using Somewhere2.ApplicationState;
 using Somewhere2.BaseClasses;
+using Somewhere2.GUIApplication;
 
 namespace Somewhere2.Controls
 {
@@ -23,7 +24,7 @@ namespace Somewhere2.Controls
 
         #region Interface
 
-        public override void Initialize(ApplicationContext context)
+        public override void Initialize(RenderingContext context)
         {
             Text = new Text(Label, context.BasicRendering.DefaultFont);
             Text.CharacterSize = 24;
@@ -33,7 +34,7 @@ namespace Somewhere2.Controls
             Shape = new RectangleShape(new Vector2f(bounds.Width, Text.CharacterSize));
         }
 
-        public override void Draw(ApplicationContext context)
+        public override void Draw(RenderingContext context)
         {
             context.Window.Draw(Shape);
             context.Window.Draw(Text);

@@ -3,16 +3,19 @@ using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
+using Somewhere2.ApplicationState;
 using Somewhere2.BaseClasses;
 using Somewhere2.Controls;
 
-namespace Somewhere2.ApplicationState
+namespace Somewhere2.GUIApplication
 {
     public class Application
     {
         #region Interface
-        public Application()
+        public Application(RuntimeData appState)
         {
+            RuntimeData = appState;
+            
             InitializeWindow();
             InitializeWindowHandlers();
             InitializeDrawContexts();
@@ -35,7 +38,8 @@ namespace Somewhere2.ApplicationState
         #endregion
 
         #region Members
-        private ApplicationContext ApplicationContext { get; set; } 
+        private RuntimeData RuntimeData { get; }
+        private RenderingContext RenderingContext { get; set; } 
         private RenderWindow AppWindow { get; set; }
         private List<Control> Controls { get; set; }
         #endregion
@@ -52,7 +56,7 @@ namespace Somewhere2.ApplicationState
             BasicRenderingInfrastructure rendering = new BasicRenderingInfrastructure();
             rendering.Setup(AppWindow);
 
-            ApplicationContext = new ApplicationContext()
+            RenderingContext = new RenderingContext()
             {
                 MainApplication = this,
                 Window = AppWindow,
@@ -73,7 +77,7 @@ namespace Somewhere2.ApplicationState
 
             foreach (Control control in Controls)
             {
-                control.Initialize(ApplicationContext);
+                control.Initialize(RenderingContext);
             }
         }
         private void PlayIntro()
@@ -87,7 +91,7 @@ namespace Somewhere2.ApplicationState
             // Draw current screen
             foreach (Control control in Controls)
             {
-                control.Draw(ApplicationContext);
+                control.Draw(RenderingContext);
             }
         }
         #endregion

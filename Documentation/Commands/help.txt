@@ -1,0 +1,2 @@
+﻿<Blue>help</>: <Body>Show help text for a command.</>
+  <Green>help</> <Gray>commandname</> Show help text for a command.

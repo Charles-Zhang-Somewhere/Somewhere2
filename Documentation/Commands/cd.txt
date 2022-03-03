@@ -1,0 +1,2 @@
+﻿<Blue>cd</>: <Body>Change current working directory to a new path; There is no need to double quote new path if it contains space.</>
+  <Green>cd</> <Gray>new directory path</> Change current working directory to the new path.

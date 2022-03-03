@@ -1,0 +1,2 @@
+﻿<Blue>open</>: <Body>Open or create a new database file.</>
+  <Green>open</> <Gray>filepath</> Open the database at path; If file doesn't exist, create one.

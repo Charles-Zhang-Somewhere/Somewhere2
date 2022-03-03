@@ -1,0 +1,2 @@
+﻿<Blue>pwd</>: <Body>Show full path of current working directory.</>
+  <Green>pwd</> Print current working directory.

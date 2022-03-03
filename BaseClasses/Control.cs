@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using SFML.Graphics;
 using Somewhere2.ApplicationState;
+using Somewhere2.GUIApplication;
 
 namespace Somewhere2.BaseClasses
 {
@@ -10,8 +11,8 @@ namespace Somewhere2.BaseClasses
         {
             Children = new List<Control>();
         }
-        public abstract void Initialize(ApplicationContext context);
-        public abstract void Draw(ApplicationContext context);
+        public abstract void Initialize(RenderingContext context);
+        public abstract void Draw(RenderingContext context);
 
         protected List<Control> Children { get; }
     }
