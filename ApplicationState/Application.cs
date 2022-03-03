@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -15,6 +16,7 @@ namespace Somewhere2.ApplicationState
             InitializeWindow();
             InitializeWindowHandlers();
             InitializeDrawContexts();
+            PlayIntro();
         }
         public void Run()
         {
@@ -73,6 +75,12 @@ namespace Somewhere2.ApplicationState
             {
                 control.Initialize(ApplicationContext);
             }
+        }
+        private void PlayIntro()
+        {
+            SoundBuffer buffer = new SoundBuffer(Helpers.ReadBinaryResource("Somewhere2.Assets.Sounds.Intro.wav"));
+            Sound sound = new Sound(buffer);
+            sound.Play();
         }
         private void DrawContents()
         {

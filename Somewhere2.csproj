@@ -11,12 +11,14 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Assets" />
+      <Folder Include="Assets\Sounds" />
     </ItemGroup>
 
     <ItemGroup>
       <None Remove="Assets\Fonts\Roboto\Roboto-Regular.ttf" />
       <EmbeddedResource Include="Assets\Fonts\Roboto\Roboto-Regular.ttf" />
+      <None Remove="Assets\Sounds\Intro.wav" />
+      <EmbeddedResource Include="Assets\Sounds\Intro.wav" />
     </ItemGroup>
 
 </Project>
