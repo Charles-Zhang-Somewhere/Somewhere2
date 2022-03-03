@@ -1,0 +1,8 @@
+﻿<Blue>Welcome to Somewhere 2!</>
+**Navigation Commands**: <Green>pwd</>, <Green>cd</>
+**Basic Commands**: <Green>t (tag, tagfile, tagfolder, tagnote)</>, <Green>rm</>
+**Database Browsing Commands**: <Green>tags</>, <Green>items</>, <Green>notes</>, <Green>ck (check)</>
+**Window Commands**: <Green>gui</>, <Green>tui</>
+**Other Commands**: <Green>exit</>, <Green>help</>
+(Command names are not case-sensitive)
+(Use `<Green>Help CommandName</>` command to learn syntax about specific commands) 

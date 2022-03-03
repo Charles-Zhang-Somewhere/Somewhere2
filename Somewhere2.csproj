@@ -19,6 +19,11 @@
       <EmbeddedResource Include="Assets\Fonts\Roboto\Roboto-Regular.ttf" />
       <None Remove="Assets\Sounds\Intro.wav" />
       <EmbeddedResource Include="Assets\Sounds\Intro.wav" />
+      <None Remove="Documentation\Welcome.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Documentation\Welcome.txt" />
     </ItemGroup>
 
 </Project>
