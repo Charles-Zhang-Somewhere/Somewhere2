@@ -2,7 +2,6 @@
 using System.Configuration;
 using System.IO;
 using System.Threading;
-using NAudio.Wave;
 using Somewhere2.CLIApplication;
 using Somewhere2.TUIApplication.Applet;
 using Terminal.Gui;

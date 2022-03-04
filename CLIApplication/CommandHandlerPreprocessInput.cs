@@ -34,7 +34,8 @@ namespace Somewhere2.CLIApplication
             string[] databaseCommands = new string[] { 
                 "add", "t", "tag", "tagfile", "tagfolder", 
                 "rm", 
-                "note", "tags", "items", "notes" 
+                "note", "tags", "items", "notes",
+                "stats", "sp", "scratchpad"
             };
             if (!RuntimeData.Loaded && databaseCommands.Contains(command))
                 ColorfulPrintLine("<Error>Load a database first before executing tagging operations.</>");

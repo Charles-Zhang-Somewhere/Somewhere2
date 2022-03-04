@@ -9,10 +9,17 @@ namespace Somewhere2.GUIApplication
         
         public Font DefaultFont { get; set; }
         
-        public void Setup(RenderWindow window)
+        public static BasicRenderingInfrastructure Setup()
         {
-            DefaultFontAsset = Helpers.ReadBinaryResource("Somewhere2.Assets.Fonts.Roboto.Roboto-Regular.ttf");
-            DefaultFont = new Font(DefaultFontAsset);
+            var fontAsset = Helpers.ReadBinaryResource("Somewhere2.Assets.Fonts.Roboto.Roboto-Regular.ttf");
+            var font = new Font(fontAsset);
+            
+            BasicRenderingInfrastructure infrastructure = new BasicRenderingInfrastructure()
+            {
+                DefaultFontAsset = fontAsset,
+                DefaultFont = font
+            };
+            return infrastructure;
         }
     }
 }

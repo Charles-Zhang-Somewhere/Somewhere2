@@ -7,6 +7,7 @@ using System.Threading;
 using Somewhere2.ApplicationState;
 using Somewhere2.Constants;
 using Somewhere2.GUIApplication;
+using Somewhere2.GUIApplication.ToolWindows;
 using Somewhere2.System;
 
 namespace Somewhere2.CLIApplication
@@ -92,9 +93,12 @@ namespace Somewhere2.CLIApplication
         {
             HideConsole();
             
-            Application window = new Application(RuntimeData);
-            window.Run();
+            new MainApplication(RuntimeData).Run();
         }
+        private void ShowStatsWindow()
+            => new StatsWindow(RuntimeData).Run();
+        private void ShowScratchPad()
+            => new ScratchPad(RuntimeData).Run();
         string[] SplitTags(string csv, char splitter = ',')
             => csv.Split(splitter).Select(t => t.Trim().ToLower()).Distinct().OrderBy(t => t).ToArray();
         #endregion

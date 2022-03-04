@@ -12,8 +12,8 @@ namespace Somewhere2.BaseClasses
             Children = new List<Control>();
         }
         public abstract void Initialize(RenderingContext context);
-        public abstract void Draw(RenderingContext context);
-
+        public abstract void Draw(RenderWindow owner);
+        
         protected List<Control> Children { get; }
     }
 }

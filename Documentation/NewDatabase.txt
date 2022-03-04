@@ -2,3 +2,4 @@
 **Basic Commands**: <Green>t (add, tag, tagfile, tagfolder)</>, <Green>rm</>, <Green>note</>,  
 **Database Browsing Commands**: <Green>tags</>, <Green>items</>, <Green>notes</>, <Green>ck (check)</>
 **File System Commands**: <Green>move</>
+**Tool Commands**: <Green>stats</>, <Green>sp (scratchpad)</>

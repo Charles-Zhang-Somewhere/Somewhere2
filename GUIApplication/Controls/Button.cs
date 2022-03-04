@@ -1,10 +1,8 @@
 ﻿using SFML.Graphics;
 using SFML.System;
-using Somewhere2.ApplicationState;
 using Somewhere2.BaseClasses;
-using Somewhere2.GUIApplication;
 
-namespace Somewhere2.Controls
+namespace Somewhere2.GUIApplication.Controls
 {
     public class Button: Control
     {
@@ -34,10 +32,10 @@ namespace Somewhere2.Controls
             Shape = new RectangleShape(new Vector2f(bounds.Width, Text.CharacterSize));
         }
 
-        public override void Draw(RenderingContext context)
+        public override void Draw(RenderWindow owner)
         {
-            context.Window.Draw(Shape);
-            context.Window.Draw(Text);
+            owner.Draw(Shape);
+            owner.Draw(Text);
         }
         #endregion
     }

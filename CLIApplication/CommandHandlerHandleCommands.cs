@@ -67,6 +67,13 @@ namespace Somewhere2.CLIApplication
                     Thread.Sleep(2000);
                     FileService.EditConfigFile(RuntimeData);
                     break;
+                case "stats":
+                    ShowStatsWindow();
+                    break;
+                case "sp":
+                case "scratchpad":
+                    ShowScratchPad();
+                    break;
                 case "tags":
                     ShowTags();
                     break;
