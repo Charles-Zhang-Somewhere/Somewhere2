@@ -3,6 +3,11 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <Title>Somewhere 2</Title>
+        <Authors>Charles Zhang</Authors>
+        <PackageProjectUrl>https://github.com/Charles-Zhang-Somewhere/Somewhere2</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Charles-Zhang-Somewhere/Somewhere2</RepositoryUrl>
+        <ApplicationIcon>Icon.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>

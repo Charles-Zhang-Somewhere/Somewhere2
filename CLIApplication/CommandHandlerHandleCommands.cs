@@ -23,7 +23,7 @@ namespace Somewhere2.CLIApplication
                     Browse();
                     break;
                 case "cd":
-                    if (Directory.Exists(arguments[0]))
+                    if (arguments.Length != 0 && Directory.Exists(arguments[0]))
                     {
                         CurrentWorkingDirectory = arguments[0];
                         AddRecent(CurrentWorkingDirectory, RecentType.Folder);
