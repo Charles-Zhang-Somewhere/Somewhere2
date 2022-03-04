@@ -19,6 +19,9 @@ namespace Somewhere2.CLIApplication
                 case "tag":
                     Tag(arguments);
                     break;
+                case "browse":
+                    Browse();
+                    break;
                 case "cd":
                     if (Directory.Exists(arguments[0]))
                     {
