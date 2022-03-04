@@ -8,6 +8,9 @@
         <PackageProjectUrl>https://github.com/Charles-Zhang-Somewhere/Somewhere2</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Charles-Zhang-Somewhere/Somewhere2</RepositoryUrl>
         <ApplicationIcon>Icon.ico</ApplicationIcon>
+        <UseWPF>true</UseWPF>
+        <DisableWinExeOutputInference>true</DisableWinExeOutputInference>
+        <StartupObject>Somewhere2.Program</StartupObject>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,6 +22,7 @@
     <ItemGroup>
       <Folder Include="Assets\Sounds" />
       <Folder Include="CLIApplication\Parts" />
+      <Folder Include="WPFApplication\Components" />
     </ItemGroup>
 
     <ItemGroup>
@@ -42,6 +46,10 @@
       <EmbeddedResource Include="Documentation\InteractiveTag.txt" />
       <EmbeddedResource Include="Documentation\NewDatabase.txt" />
       <EmbeddedResource Include="Documentation\Welcome.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ApplicationDefinition Remove="App.xaml" />
     </ItemGroup>
 
 </Project>

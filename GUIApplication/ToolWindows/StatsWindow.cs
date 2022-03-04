@@ -80,17 +80,17 @@ namespace Somewhere2.GUIApplication.ToolWindows
         #endregion
 
         #region Event Handlers
-        private void AppWindowOnMouseButtonPressed(object? sender, MouseButtonEventArgs e)
+        private void AppWindowOnMouseButtonPressed(object sender, MouseButtonEventArgs e)
         {
             if (e.Button == Mouse.Button.Left)
             {
             }
         }
-        private void AppWindowOnMouseButtonReleased(object? sender, MouseButtonEventArgs e)
+        private void AppWindowOnMouseButtonReleased(object sender, MouseButtonEventArgs e)
         {
         }
 
-        private void AppWindowOnMouseMoved(object? sender, MouseMoveEventArgs e)
+        private void AppWindowOnMouseMoved(object sender, MouseMoveEventArgs e)
         {
         }
         #endregion

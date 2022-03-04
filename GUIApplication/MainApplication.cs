@@ -92,7 +92,7 @@ namespace Somewhere2.GUIApplication
         #endregion
 
         #region Event Handlers
-        private void AppWindowOnMouseButtonPressed(object? sender, MouseButtonEventArgs e)
+        private void AppWindowOnMouseButtonPressed(object sender, MouseButtonEventArgs e)
         {
             if (e.Button == Mouse.Button.Left)
             {
@@ -100,12 +100,12 @@ namespace Somewhere2.GUIApplication
                 MoveWindow = true;
             }
         }
-        private void AppWindowOnMouseButtonReleased(object? sender, MouseButtonEventArgs e)
+        private void AppWindowOnMouseButtonReleased(object sender, MouseButtonEventArgs e)
         {
             if (MoveWindow) MoveWindow = false;
         }
 
-        private void AppWindowOnMouseMoved(object? sender, MouseMoveEventArgs e)
+        private void AppWindowOnMouseMoved(object sender, MouseMoveEventArgs e)
         {
             if (MoveWindow)
             {

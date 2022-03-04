@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Somewhere2.System
+namespace Somewhere2.SystemService
 {
     public static class WindowHelper
     {

@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Threading;
 using Somewhere2.ApplicationState;
-using NotImplementedException = System.NotImplementedException;
 
-namespace Somewhere2.System
+namespace Somewhere2.SystemService
 {
     public class FileService
     {

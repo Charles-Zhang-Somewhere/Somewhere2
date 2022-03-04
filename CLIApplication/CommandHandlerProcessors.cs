@@ -3,31 +3,12 @@ using System.IO;
 using System.Linq;
 using Somewhere2.ApplicationState;
 using Somewhere2.Constants;
-using Terminal.Gui;
 
 namespace Somewhere2.CLIApplication
 {
     internal partial class CommandHandler 
     {
         #region Command Processors
-        private void Browse()
-        {
-            Application.Init();
-            // Create a new open dialog
-            var openDialog = new OpenDialog("Open", "Select a database file")
-            {
-                DirectoryPath = CurrentWorkingDirectory,
-                AllowsMultipleSelection = false,
-                AllowedFileTypes = new string[] { StringConstants.SomewhereExtension }
-            };
-            Application.Run(openDialog);
-            Application.Shutdown();
-
-            if (!openDialog.Canceled)
-            {
-                OpenDatabaseFile(openDialog.FilePath.ToString());
-            }
-        }
         private void Tag(string[] arguments)
         {
             if (arguments.Length == 0)

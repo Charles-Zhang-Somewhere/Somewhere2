@@ -4,11 +4,15 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Windows;
+using System.Windows.Threading;
+using Microsoft.Win32;
 using Somewhere2.ApplicationState;
 using Somewhere2.Constants;
 using Somewhere2.GUIApplication;
 using Somewhere2.GUIApplication.ToolWindows;
-using Somewhere2.System;
+using Somewhere2.SystemService;
+using ScratchPad = Somewhere2.WPFApplication.Applets.ScratchPad;
 
 namespace Somewhere2.CLIApplication
 {
@@ -24,6 +28,16 @@ namespace Somewhere2.CLIApplication
             });
             RuntimeData.Recents = RuntimeData.Recents.Distinct().ToList();
             FileService.UpdateRecentFile(RuntimeData.Recents);
+        }
+        private void Browse()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = CurrentWorkingDirectory;
+            openFileDialog.Title = "Open - Select a database file";
+            openFileDialog.Filter = $"database files (*{StringConstants.SomewhereExtension})|*{StringConstants.SomewhereExtension}";
+            openFileDialog.Multiselect = false;
+            if(openFileDialog.ShowDialog() == true)
+                OpenDatabaseFile(openFileDialog.FileName);
         }
         /// <summary>
         /// Check whether the filename part of the file, e.g. database file, contains proper suffix
@@ -97,8 +111,15 @@ namespace Somewhere2.CLIApplication
         }
         private void ShowStatsWindow()
             => new StatsWindow(RuntimeData).Run();
+
         private void ShowScratchPad()
-            => new ScratchPad(RuntimeData).Run();
+        {
+            Application.Current.Dispatcher.BeginInvoke(() =>
+            {
+                ScratchPad scratchPad = new ScratchPad();
+                scratchPad.Show();
+            });
+        }
         string[] SplitTags(string csv, char splitter = ',')
             => csv.Split(splitter).Select(t => t.Trim().ToLower()).Distinct().OrderBy(t => t).ToArray();
         #endregion

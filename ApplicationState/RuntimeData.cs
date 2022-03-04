@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Windows.Threading;
 using Somewhere2.Constants;
 using Somewhere2.GUIApplication;
 using NotImplementedException = System.NotImplementedException;
@@ -25,6 +26,7 @@ namespace Somewhere2.ApplicationState
         #region Global Contexts
         public RenderingContext RenderingContext { get; set; }
         public MainApplication MainGUIApplication { get; set; }
+        public Dispatcher STADispatcher { get; set; }
         #endregion
 
         #region Opened Database

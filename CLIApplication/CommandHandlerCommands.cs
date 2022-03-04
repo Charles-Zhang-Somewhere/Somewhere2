@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading;
 using Somewhere2.ApplicationState;
 using Somewhere2.Constants;
-using Somewhere2.System;
+using Somewhere2.SystemService;
 
 namespace Somewhere2.CLIApplication
 {

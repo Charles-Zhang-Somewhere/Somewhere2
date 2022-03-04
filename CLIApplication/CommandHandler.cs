@@ -7,17 +7,16 @@ using System.Threading;
 using Somewhere2.ApplicationState;
 using Somewhere2.Constants;
 using Somewhere2.GUIApplication;
-using Somewhere2.System;
 
 namespace Somewhere2.CLIApplication
 {
     internal partial class CommandHandler
     {
         #region Construction
-        public CommandHandler()
+        public CommandHandler(RuntimeData runtimeData)
         {
             CurrentWorkingDirectory = Directory.GetCurrentDirectory();
-            RuntimeData = new RuntimeData();
+            RuntimeData = runtimeData;
             
             PrepareFileServices();
         }
@@ -37,7 +36,8 @@ namespace Somewhere2.CLIApplication
             {
                 Console.Write($"> {Shorten(CurrentWorkingDirectory)}: ");
                 string input = Console.ReadLine();
-                PreprocessInput(input);
+                if(!string.IsNullOrWhiteSpace(input))
+                    PreprocessInput(input);
             }
         }
         #endregion
