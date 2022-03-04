@@ -65,6 +65,7 @@ namespace Somewhere2
                 {
                     case "add":
                     case "cd":
+                    case "t":
                     case "tag":
                     case "note":
                         rawArguments = input.Contains('"') 
@@ -78,7 +79,7 @@ namespace Somewhere2
             }
 
             string[] databaseCommands = new string[] { 
-                "add", "tag", "tagfile", "tagfolder", 
+                "add", "t", "tag", "tagfile", "tagfolder", 
                 "rm", 
                 "note", "tags", "items", "notes" 
             };
@@ -274,14 +275,7 @@ namespace Somewhere2
                     ShouldExit = true;
                     break;
                 case "ls":
-                    ColorfulPrintLine($"<White>{"Name".PadRight(60)}Type</>");
-                    foreach (string path in Directory.EnumerateFileSystemEntries(CurrentWorkingDirectory))
-                    {
-                        string extension = Path.GetExtension(path);
-                        string filename = Path.GetFileName(path).PadRight(60);
-                        if(extension == StringConstants.SomewhereExtension) ColorfulPrintLine($"<Cyan>{filename}</>{extension}");
-                        else ColorfulPrintLine($"<Orange>{filename}</>{extension}");
-                    }
+                    PrintDirectory();
                     break;
                 case "note":
                     string name = arguments[0];
@@ -312,6 +306,9 @@ namespace Somewhere2
                     ColorfulPrintLine("This command will open an external editor.");
                     Thread.Sleep(2000);
                     FileService.EditConfigFile(RuntimeData);
+                    break;
+                case "tags":
+                    ShowTags();
                     break;
             }
         }
@@ -364,8 +361,8 @@ namespace Somewhere2
             Application window = new Application(RuntimeData);
             window.Run();
         }
-        string[] SplitTags(string csv)
-            => csv.Split(',').Select(t => t.Trim().ToLower()).Distinct().OrderBy(t => t).ToArray();
+        string[] SplitTags(string csv, char splitter = ',')
+            => csv.Split(splitter).Select(t => t.Trim().ToLower()).Distinct().OrderBy(t => t).ToArray();
         #endregion
 
         #region Command Processors
@@ -396,8 +393,70 @@ namespace Somewhere2
             ColorfulPrintLine($"<Bold>Start interactive tagging at current working directory.</> ({CurrentWorkingDirectory})");
             string text = Helpers.ReadTextResource("Somewhere2.Documentation.InteractiveTag.txt");
             ColorfulPrintLine(text);
+
+            int operation;
+            ColorfulPrint("<Bold>Select Operation</> (<Gray>1) Apply tags to chosen files</> <Gray>2) Remove tags from chosen files</>): ");
+            if (!int.TryParse(Console.ReadLine(), out operation)) return;
             
-            
+            ColorfulPrint("<Bold>Enter tags</>: ");
+            string[] tags = SplitTags(Console.ReadLine());
+
+            ColorfulPrintLine($"<White>{"ID".PadRight(5)}{"Name".PadRight(60)}Type</>");
+            string[] entries = Directory.EnumerateFileSystemEntries(CurrentWorkingDirectory).ToArray();
+            for (int i = 0; i < entries.Length; i++)
+            {
+                string path = entries[i];
+                string id = $"{i+1}".PadRight(5);
+                string extension = Path.GetExtension(path);
+                string filename = Path.GetFileName(path).PadRight(60);
+                ColorfulPrintLine(extension == StringConstants.SomewhereExtension
+                    ? $"{id}<Cyan>{filename}</>{extension}"
+                    : $"{id}<Orange>{filename}</>{extension}");
+            }
+            ColorfulPrint("<White>Choose files (separate with space): </>");
+            try
+            {
+                int[] indices = SplitTags(Console.ReadLine(), ' ')
+                    .Select(int.Parse).Where(i => i >= 1 && i <= entries.Length)
+                    .Select(i => i - 1).ToArray();
+
+                switch (operation)
+                {
+                    case 1:
+                        ColorfulPrint($"<White>The following entries will be applied with: </>{string.Join(", ", tags)}");
+                        break;
+                    case 2:
+                        ColorfulPrint($"<White>The following entries will be removed with: </>{string.Join(", ", tags)}");
+                        break;
+                }
+                Console.ReadLine();
+                foreach (string shorthand in indices.Select(i => entries[i]))
+                {
+                    ColorfulPrintLine(shorthand);
+                }
+                ColorfulPrint("<Warning>Continue? [Y/N]</> ");
+                string cont = Console.ReadLine();
+                // Do something
+                // ...
+                // Summary
+                ColorfulPrintLine($"{indices.Length} {(indices.Length == 1 ? "entry is" : "entries are")} updated.", "Blue");
+            }
+            catch (Exception e)
+            {
+                ColorfulPrintLine(e.Message, "Error");
+                return;
+            }
+        }
+        private void PrintDirectory()
+        {
+            ColorfulPrintLine($"<White>{"Name".PadRight(60)}Type</>");
+            foreach (string path in Directory.EnumerateFileSystemEntries(CurrentWorkingDirectory))
+            {
+                string extension = Path.GetExtension(path);
+                string filename = Path.GetFileName(path).PadRight(60);
+                if(extension == StringConstants.SomewhereExtension) ColorfulPrintLine($"<Cyan>{filename}</>{extension}");
+                else ColorfulPrintLine($"<Orange>{filename}</>{extension}");
+            }
         }
         private void PrintRecent(string[] arguments)
         {
@@ -418,6 +477,18 @@ namespace Somewhere2
                         ClearRecent();
                         break;
                 }   
+            }
+        }
+        private void ShowTags()
+        {
+            string[] tags = RuntimeData.Tags.ToArray();
+            for (int i = 0; i < tags.Length; i++)
+            {
+                string tag = tags[i];
+                if(i != tags.Length - 1)
+                    ColorfulPrint($"<Orange>{tag}</>, ");
+                else
+                    ColorfulPrint($"<Orange>{tag}</>");
             }
         }
         #endregion

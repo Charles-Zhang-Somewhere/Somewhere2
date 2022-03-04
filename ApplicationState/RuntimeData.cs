@@ -15,6 +15,13 @@ namespace Somewhere2.ApplicationState
         public List<Recent> Recents { get; set; }
         #endregion
 
+        #region Accessors
+
+        public IEnumerable<string> Tags => SystemEntries.Values.SelectMany(v => v.Tags).Distinct()
+            .Union(Notes.SelectMany(n => n.Tags).Distinct())
+            .Distinct().OrderBy(t => t);
+        #endregion
+
         #region Opened Database
         public string DatabaseName { get; set; }
         public bool Loaded => SystemEntries != null || Notes != null;

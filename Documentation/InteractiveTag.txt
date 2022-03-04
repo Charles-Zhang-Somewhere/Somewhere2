@@ -1,1 +1,3 @@
-﻿Type `<Code>exit</>` to exit interactive session
+﻿In interactive tagging session, you first <Orange>select one operation to perform</>,
+then <Orange>enter a list of tags</> ,
+then <Orange>choose the files to perform those operations with the chosen tags</>.
