@@ -1,0 +1,4 @@
+﻿<Blue>tag</>: <Body>Create tags for items.</>
+  <Green>tag</> Use this command without arguments to enter interactive tagging session.
+  <Green>tag</> <Gray>file path</> Tag a specific file/folder; Tags will be entered in the prompt.
+  <Green>tag</> <Gray>filepath</> <Gray>tags_list</> Tag a specific file/folder with specified tags.

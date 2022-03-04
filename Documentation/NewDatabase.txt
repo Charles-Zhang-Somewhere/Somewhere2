@@ -1,3 +1,4 @@
-﻿**Navigation Commands**: <Green>pwd</>, <Green>cd</>
-**Basic Commands**: <Green>t (tag, tagfile, tagfolder, tagnote)</>, <Green>rm</>
+﻿**Navigation Commands**: <Green>pwd</>, <Green>cd</>, <Green>ls</>
+**Basic Commands**: <Green>t (add, tag, tagfile, tagfolder, tagnote)</>, <Green>rm</>, <Green>note</>,  
 **Database Browsing Commands**: <Green>tags</>, <Green>items</>, <Green>notes</>, <Green>ck (check)</>
+**File System Commands**: <Green>move</>

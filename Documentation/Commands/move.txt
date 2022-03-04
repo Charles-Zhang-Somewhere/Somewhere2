@@ -1,0 +1,2 @@
+﻿<Blue>move</>: <Body>Move file/folder items around physically on disk.</>
+  <Green>move</> <Gray>tags list</> Use <Green>tags list</> to filter items to be moved.

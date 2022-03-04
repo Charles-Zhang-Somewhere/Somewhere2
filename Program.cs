@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -59,12 +60,23 @@ namespace Somewhere2
             string[] rawArguments = null;
             switch (command)
             {
+                case "add":
                 case "cd":
-                    rawArguments = new string[]{command, input.Substring(command.Length + 1).Trim().Trim('"')};
+                case "tag":
+                case "note":
+                    rawArguments = input.Contains('"') 
+                        ? input.SplitCommandLine().ToArray() 
+                        : new string[]{command, input.Substring(command.Length + 1).Trim()};
                     break;
                 default:
                     rawArguments = input.Split(' ');
                     break;
+            }
+
+            string[] databaseCommands = new string[] { "add" };
+            if (!RuntimeData.Loaded && databaseCommands.Contains(command))
+            {
+                ColorfulPrintLine("<Error>Load a database first before executing tagging operations.</>");
             }
             HandleCommands(command, rawArguments, mapping);
         }
@@ -89,6 +101,22 @@ namespace Somewhere2
         #endregion
 
         #region Routines
+        private void AddRecent(string value, RecentType type)
+        {
+            RuntimeData.Recents.Add(new Recent()
+            {
+                Value = value,
+                Annotation = type
+            });
+            FileService.UpdateRecentFile(RuntimeData.Recents);
+        }
+        /// <summary>
+        /// Check whether the filename part of the file, e.g. database file, contains proper suffix
+        /// </summary>
+        string CheckAppendSuffix(string originalPath, string extension)
+            => !originalPath.EndsWith(extension)
+                ? $"{originalPath}{extension}"
+                : originalPath; 
         private void ColorfulPrint(string text)
         {
             // Save previous color
@@ -111,15 +139,33 @@ namespace Somewhere2
                     case "Body":
                         Console.ForegroundColor = ConsoleColor.Gray;
                         break;
+                    case "Emphasis":
+                        Console.ForegroundColor = ConsoleColor.DarkCyan;
+                        break;
+                    case "Warning":
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
+                        break;
+                    case "Error":
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        break;
                     // Color names
                     case "Blue":
                         Console.ForegroundColor = ConsoleColor.DarkCyan;
+                        break;
+                    case "Cyan":
+                        Console.ForegroundColor = ConsoleColor.Cyan;
                         break;
                     case "Gray":
                         Console.ForegroundColor = ConsoleColor.Gray;
                         break;
                     case "Green":
                         Console.ForegroundColor = ConsoleColor.DarkGreen;
+                        break;
+                    case "Orange":
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
+                        break;
+                    case "White":
+                        Console.ForegroundColor = ConsoleColor.White;
                         break;
                 }
             }
@@ -188,33 +234,42 @@ namespace Somewhere2
         /// <param name="rawArguments">Includes the command itself</param>
         private void HandleCommands(string command, string[] rawArguments, Dictionary<string, string> kepMaps)
         {
-            // Decide whether a path is absolute or relative
-            string NormalizeFilePath(string shorthand)
-                // If it contains a valid parent directory, then it's absolute
-                => Directory.Exists(Path.GetDirectoryName(shorthand))
-                    ? shorthand
-                    : Path.Combine(CurrentWorkingDirectory, shorthand);
-            // Check whether the filename part of the file, e.g. database file, contains proper suffix
-            string CheckAppendSuffix(string originalPath, string extension)
-                => !originalPath.EndsWith(extension)
-                    ? $"{originalPath}{extension}"
-                    : originalPath; 
-            
             // Alphabetical order
             switch (command)
             {
+                case "add":
+                case "tag":
+                    Tag(rawArguments);
+                    break;
                 case "cd":
                     CurrentWorkingDirectory = rawArguments[1];
+                    AddRecent(CurrentWorkingDirectory, RecentType.Folder);
                     break;
                 case "exit":
                     ShouldExit = true;
                     break;
+                case "ls":
+                    ColorfulPrintLine($"<White>{"Name".PadRight(60)}Type</>");
+                    foreach (string path in Directory.EnumerateFileSystemEntries(CurrentWorkingDirectory))
+                    {
+                        string extension = Path.GetExtension(path);
+                        string filename = Path.GetFileName(path).PadRight(60);
+                        if(extension == StringConstants.SomewhereExtension) ColorfulPrintLine($"<Cyan>{filename}</>{extension}");
+                        else ColorfulPrintLine($"<Orange>{filename}</>{extension}");
+                    }
+                    break;
+                case "note":
+                    string name = rawArguments[1];
+                    
+                    break;
                 case "open":
+                {
                     string shorthandPath = rawArguments[1];
                     string normalizedPath = NormalizeFilePath(shorthandPath);
                     string fullPath = CheckAppendSuffix(normalizedPath, StringConstants.DatabaseSuffix);
                     OpenDatabaseFile(fullPath);
                     break;
+                }
                 case "gui":
                     RunGUI();
                     break;
@@ -225,10 +280,21 @@ namespace Somewhere2
                 case "pwd":
                     ColorfulPrintLine(CurrentWorkingDirectory);
                     break;
+                case "setting":
+                    FileService.EditConfigFile(RuntimeData);
+                    break;
             }
         }
         private void HideConsole()
             => WindowHelper.HideConsole();
+        /// <summary>
+        /// Decide whether a path is absolute or relative
+        /// </summary>
+        string NormalizeFilePath(string shorthand)
+            // If it contains a valid parent directory, then it's absolute
+            => Directory.Exists(Path.GetDirectoryName(shorthand))
+                ? shorthand
+                : Path.Combine(CurrentWorkingDirectory, shorthand);
         private void OpenDatabaseFile(string filePath)
         {
             // Load existing one
@@ -267,6 +333,26 @@ namespace Somewhere2
             
             Application window = new Application(RuntimeData);
             window.Run();
+        }
+        string[] SplitTags(string csv)
+            => csv.Split(',').Select(t => t.Trim().ToLower()).Distinct().OrderBy(t => t).ToArray();
+        #endregion
+
+        #region Command Processors
+        private void Tag(string[] arguments)
+        {
+            string shorthandPath = arguments[1];
+            string normalizedPath = NormalizeFilePath(shorthandPath);
+
+            string tags = string.Empty;
+            if (arguments.Length == 1)
+            {
+                Console.Write("Enter tags (separate with comma, case-insensitive): ");
+                tags = Console.ReadLine();
+            }
+            else tags = arguments[2];
+            
+            RuntimeData.Update(normalizedPath, SplitTags(tags));
         }
         #endregion
     }

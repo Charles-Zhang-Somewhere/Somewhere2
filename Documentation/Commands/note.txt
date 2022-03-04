@@ -1,0 +1,2 @@
+﻿<Blue>note</>: <Body>Create a new note item.</>
+  <Green>note</> <Gray>item name</> Name for the note item.

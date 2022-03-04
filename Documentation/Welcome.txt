@@ -1,7 +1,8 @@
 ﻿<Blue>Welcome to Somewhere 2!</>
-**Navigation Commands**: <Green>pwd</>, <Green>cd</>
+**Navigation Commands**: <Green>pwd</>, <Green>cd</>, <Green>ls</>
 **Database Commands**: <Green>open (create, new)</>
 **Window Commands**: <Green>gui</>, <Green>tui</>
-**Other Commands**: <Green>exit</>, <Green>help</>
+**Other Commands**: <Green>exit</>, <Green>help</>, <Green>setting</>
 (Command names are not case-sensitive)
 (Use `<Green>Help CommandName</>` command to learn syntax about specific commands) 
+<White>Open/Create a database to start tagging!</>
