@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using Somewhere2.ApplicationState;
 using NotImplementedException = System.NotImplementedException;
 
@@ -36,7 +37,12 @@ namespace Somewhere2.System
         {
             if (e.ChangeType != WatcherChangeTypes.Changed) return;
             if (RuntimeReference != null)
+            {
+                Thread.Sleep(500);  // Wait for writing to finish
+                Console.WriteLine("Configuration file changed detected!");
+                Console.WriteLine("(Press Enter to return)");
                 RuntimeReference.Configuration = CheckConfigFile();
+            }
         }
 
         public static ApplicationConfiguration CheckConfigFile()

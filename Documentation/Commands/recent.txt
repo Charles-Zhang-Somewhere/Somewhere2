@@ -1,0 +1,7 @@
+﻿<Blue>recent</>: <Body>Show a history of recent files and paths.</>
+  <Green>recent</> Print recents.
+  <Green>recent -i</> Enter interactive session, allow query on recent logs.
+  <Green>recent -f</> Filter recent history and show only files.
+  <Green>recent -d</> Filter recent history and show only folders (directories).
+  <Green>recent --</> Filter recent history and show only databse.
+  <Green>recent clear</> or <Green>recent -r</> Clear recent history.

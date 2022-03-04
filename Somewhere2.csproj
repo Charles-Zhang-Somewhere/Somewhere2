@@ -29,7 +29,10 @@
       <EmbeddedResource Include="Documentation\Commands\note.txt" />
       <EmbeddedResource Include="Documentation\Commands\pwd.txt" />
       <EmbeddedResource Include="Documentation\Commands\open.txt" />
+      <EmbeddedResource Include="Documentation\Commands\recent.txt" />
+      <EmbeddedResource Include="Documentation\Commands\setting.txt" />
       <EmbeddedResource Include="Documentation\Commands\tag.txt" />
+      <EmbeddedResource Include="Documentation\InteractiveTag.txt" />
       <EmbeddedResource Include="Documentation\NewDatabase.txt" />
       <EmbeddedResource Include="Documentation\Welcome.txt" />
     </ItemGroup>

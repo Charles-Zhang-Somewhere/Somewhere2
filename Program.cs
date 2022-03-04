@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using SFML.Graphics;
 using SFML.Window;
 using Somewhere2.ApplicationState;
@@ -54,31 +55,37 @@ namespace Somewhere2
 
         public void PreProcessInput(string input)
         {
-            string command = input.Split(' ').First();
+            string command = input.Split(' ').First().Trim();
             Dictionary<string, string> mapping = new Dictionary<string, string>();
             
-            string[] rawArguments = null;
-            switch (command)
+            string[] rawArguments = new string[]{};
+            if (input.Trim().Length > command.Length)
             {
-                case "add":
-                case "cd":
-                case "tag":
-                case "note":
-                    rawArguments = input.Contains('"') 
-                        ? input.SplitCommandLine().ToArray() 
-                        : new string[]{command, input.Substring(command.Length + 1).Trim()};
-                    break;
-                default:
-                    rawArguments = input.Split(' ');
-                    break;
+                switch (command)
+                {
+                    case "add":
+                    case "cd":
+                    case "tag":
+                    case "note":
+                        rawArguments = input.Contains('"') 
+                            ? input.SplitCommandLine().ToArray() 
+                            : new string[]{command, input.Substring(command.Length + 1).Trim()};
+                        break;
+                    default:
+                        rawArguments = input.Split(' ');
+                        break;
+                }   
             }
 
-            string[] databaseCommands = new string[] { "add" };
+            string[] databaseCommands = new string[] { 
+                "add", "tag", "tagfile", "tagfolder", 
+                "rm", 
+                "note", "tags", "items", "notes" 
+            };
             if (!RuntimeData.Loaded && databaseCommands.Contains(command))
-            {
                 ColorfulPrintLine("<Error>Load a database first before executing tagging operations.</>");
-            }
-            HandleCommands(command, rawArguments, mapping);
+            else
+                HandleCommands(command, rawArguments.Skip(1).ToArray(), mapping);
         }
         #endregion
 
@@ -103,11 +110,12 @@ namespace Somewhere2
         #region Routines
         private void AddRecent(string value, RecentType type)
         {
-            RuntimeData.Recents.Add(new Recent()
+            RuntimeData.Recents.Insert(0, new Recent()
             {
                 Value = value,
                 Annotation = type
             });
+            RuntimeData.Recents = RuntimeData.Recents.Distinct().ToList();
             FileService.UpdateRecentFile(RuntimeData.Recents);
         }
         /// <summary>
@@ -117,6 +125,11 @@ namespace Somewhere2
             => !originalPath.EndsWith(extension)
                 ? $"{originalPath}{extension}"
                 : originalPath; 
+        private void ClearRecent()
+        {
+            RuntimeData.Recents = new List<Recent>();
+            FileService.UpdateRecentFile(RuntimeData.Recents);
+        }
         private void ColorfulPrint(string text)
         {
             // Save previous color
@@ -129,6 +142,9 @@ namespace Somewhere2
                 switch (currentStyle)
                 {
                     // Special names
+                    case "Code":
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                        break;
                     default:
                     case "Default":
                         Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -231,19 +247,28 @@ namespace Somewhere2
             ColorfulPrint(text);
             Console.WriteLine();
         }
-        /// <param name="rawArguments">Includes the command itself</param>
-        private void HandleCommands(string command, string[] rawArguments, Dictionary<string, string> kepMaps)
+        private void ColorfulPrintLine(string text, string tagWrapper)
+        {
+            ColorfulPrint($"<{tagWrapper}>{text}</>");
+            Console.WriteLine();
+        }
+        private void HandleCommands(string command, string[] arguments, Dictionary<string, string> kepMaps)
         {
             // Alphabetical order
             switch (command)
             {
                 case "add":
                 case "tag":
-                    Tag(rawArguments);
+                    Tag(arguments);
                     break;
                 case "cd":
-                    CurrentWorkingDirectory = rawArguments[1];
-                    AddRecent(CurrentWorkingDirectory, RecentType.Folder);
+                    if (Directory.Exists(arguments[0]))
+                    {
+                        CurrentWorkingDirectory = arguments[0];
+                        AddRecent(CurrentWorkingDirectory, RecentType.Folder);
+                    }
+                    else
+                        ColorfulPrintLine("Not a valid directory.", "Error");
                     break;
                 case "exit":
                     ShouldExit = true;
@@ -259,12 +284,12 @@ namespace Somewhere2
                     }
                     break;
                 case "note":
-                    string name = rawArguments[1];
+                    string name = arguments[0];
                     
                     break;
                 case "open":
                 {
-                    string shorthandPath = rawArguments[1];
+                    string shorthandPath = arguments[0];
                     string normalizedPath = NormalizeFilePath(shorthandPath);
                     string fullPath = CheckAppendSuffix(normalizedPath, StringConstants.DatabaseSuffix);
                     OpenDatabaseFile(fullPath);
@@ -274,13 +299,18 @@ namespace Somewhere2
                     RunGUI();
                     break;
                 case "help":
-                    string text = Helpers.ReadTextResource($"Somewhere2.Documentation.Commands.{rawArguments[1]}.txt");
+                    string text = Helpers.ReadTextResource($"Somewhere2.Documentation.Commands.{arguments[0]}.txt");
                     ColorfulPrintLine(text);
                     break;
                 case "pwd":
                     ColorfulPrintLine(CurrentWorkingDirectory);
                     break;
+                case "recent":
+                    PrintRecent(arguments);
+                    break;
                 case "setting":
+                    ColorfulPrintLine("This command will open an external editor.");
+                    Thread.Sleep(2000);
                     FileService.EditConfigFile(RuntimeData);
                     break;
             }
@@ -341,7 +371,13 @@ namespace Somewhere2
         #region Command Processors
         private void Tag(string[] arguments)
         {
-            string shorthandPath = arguments[1];
+            if (arguments.Length == 0)
+            {
+                InteractiveTag();
+                return;
+            }
+            
+            string shorthandPath = arguments[0];
             string normalizedPath = NormalizeFilePath(shorthandPath);
 
             string tags = string.Empty;
@@ -350,9 +386,39 @@ namespace Somewhere2
                 Console.Write("Enter tags (separate with comma, case-insensitive): ");
                 tags = Console.ReadLine();
             }
-            else tags = arguments[2];
+            else tags = arguments[1];
             
             RuntimeData.Update(normalizedPath, SplitTags(tags));
+        }
+
+        private void InteractiveTag()
+        {
+            ColorfulPrintLine($"<Bold>Start interactive tagging at current working directory.</> ({CurrentWorkingDirectory})");
+            string text = Helpers.ReadTextResource("Somewhere2.Documentation.InteractiveTag.txt");
+            ColorfulPrintLine(text);
+            
+            
+        }
+        private void PrintRecent(string[] arguments)
+        {
+            if (arguments.Length == 0)
+            {
+                ColorfulPrintLine($"{"Path".PadRight(70)}Type", "White");
+                foreach (Recent recent in RuntimeData.Recents)
+                {
+                    ColorfulPrintLine($"{recent.Value.PadRight(70)}{recent.Annotation}");
+                }
+            }
+            else
+            {
+                switch (arguments[0])
+                {
+                    case "-r":
+                    case "clear":
+                        ClearRecent();
+                        break;
+                }   
+            }
         }
         #endregion
     }

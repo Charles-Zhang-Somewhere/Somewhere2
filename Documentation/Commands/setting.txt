@@ -1,0 +1,3 @@
+﻿<Blue>setting</>: <Body>Open Somewhere 2 settings file for editing.</>
+  <Green>setting</> Use default text editor for editing the configuration file. (Please ignore the technical log information)
+  After you are done editing, just save it and the application will automatically reload the latest configuration.
