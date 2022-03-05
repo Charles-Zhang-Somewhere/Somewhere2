@@ -28,7 +28,7 @@ namespace Somewhere2.CLIApplication
             }
             else tags = arguments[1];
             
-            RuntimeData.Update(normalizedPath, SplitTags(tags));
+            RuntimeData.Update(normalizedPath, StringHelper.SplitTags(tags));
         }
 
         private void InteractiveTag()
@@ -42,7 +42,7 @@ namespace Somewhere2.CLIApplication
             if (!int.TryParse(Console.ReadLine(), out operation)) return;
             
             ColorfulPrint("<Bold>Enter tags</>: ");
-            string[] tags = SplitTags(Console.ReadLine());
+            string[] tags = StringHelper.SplitTags(Console.ReadLine());
 
             ColorfulPrintLine($"<White>{"ID".PadRight(5)}{"Name".PadRight(60)}Type</>");
             string[] entries = Directory.EnumerateFileSystemEntries(CurrentWorkingDirectory).ToArray();
@@ -59,7 +59,7 @@ namespace Somewhere2.CLIApplication
             ColorfulPrint("<White>Choose files (separate with space): </>");
             try
             {
-                int[] indices = SplitTags(Console.ReadLine(), ' ')
+                int[] indices = StringHelper.SplitTags(Console.ReadLine(), ' ')
                     .Select(int.Parse).Where(i => i >= 1 && i <= entries.Length)
                     .Select(i => i - 1).ToArray();
 

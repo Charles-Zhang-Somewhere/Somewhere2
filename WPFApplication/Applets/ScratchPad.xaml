@@ -4,12 +4,165 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         mc:Ignorable="d" WindowStyle="None"
-        Title="Scratch Pad" Height="512" Width="512"
-        MouseDown="MainWindow_OnMouseDown"
-        AllowDrop="True" Drop="MainWindow_OnDrop">
-    <Grid Background="Black">
-        <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="20"
-                CornerRadius="4"
-                BorderBrush="DimGray" BorderThickness="5" Background="Gray"></Border>
-    </Grid>
+        Title="Scratch Pad" Height="512" Width="512" ResizeMode="NoResize"
+        MouseDown="ScratchPad_OnMouseDown"
+        AllowDrop="True" DragOver="ScratchPad_OnDragOver" DragLeave="ScratchPad_OnDragLeave" DragEnter="ScratchPad_OnDragEnter" Drop="ScratchPad_OnDrop"
+        DataContext="{Binding RelativeSource={RelativeSource self}}">
+    <Window.Resources>
+        <Style x:Key="{x:Type Button}" TargetType="Button">
+            <Setter Property="Background" Value="{x:Null}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Foreground" Value="AntiqueWhite"/>
+            <Setter Property="Margin" Value="5"></Setter>
+            <Setter Property="MinWidth" Value="60"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border 
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="DarkGoldenrod"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="AddButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="BorderBrush" Value="Aquamarine"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsAddingMode}" Value="True">
+                    <Setter Property="Background" Value="Aquamarine"/>
+                    <Setter Property="Foreground" Value="DarkOliveGreen"></Setter>
+                </DataTrigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Aqua"/>
+                    <Setter Property="Foreground" Value="DarkOliveGreen"></Setter>
+                </Trigger>
+            </Style.Triggers>
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+        <Style x:Key="RemoveButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="BorderBrush" Value="DarkRed"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsAddingMode}" Value="False">
+                    <Setter Property="Background" Value="Red"/>
+                </DataTrigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Red"/>
+                </Trigger>
+            </Style.Triggers>
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+        <Style x:Key="CentralRegion" TargetType="Border">
+            <Setter Property="Background" Value="Gray"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsDraggingOver}" Value="True">
+                    <Setter Property="Background" Value="LightBlue"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="Small" TargetType="Inline">
+            <Setter Property="FontSize" Value="32"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontFamily" Value="Baskerville,Georgia,Arial"/>
+        </Style>
+        <Style x:Key="{x:Type Label}" TargetType="Label">
+            <Setter Property="Foreground" Value="Gray" />
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="FontFamily" Value="Baskerville,Georgia,Arial"/>
+            <Setter Property="MinWidth" Value="48"></Setter>
+        </Style>
+        <Style x:Key="TagsFieldLabel" TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
+            <Setter Property="FontSize" Value="20" />
+        </Style>
+        <Style x:Key="ToastLabel" TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
+            <Setter Property="Foreground" Value="LightGreen"></Setter>
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="58"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontFamily" Value="Baskerville,Georgia,Arial"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="DarkSlateGray"></Setter>
+            <Setter Property="BorderBrush" Value="DarkGreen"></Setter>
+            <Setter Property="BorderThickness" Value="2"></Setter>
+            <Setter Property="Foreground" Value="LightBlue"></Setter>
+            <Setter Property="Margin" Value="2 0"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        </Style>
+        
+        <Storyboard x:Key="animate">
+            <ObjectAnimationUsingKeyFrames BeginTime="0:0:0" Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Visible</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation BeginTime="0:0:0.0" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.2"/>
+            <DoubleAnimation BeginTime="0:0:5.0" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.5"/>
+            <ObjectAnimationUsingKeyFrames BeginTime="0:0:5.5" Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Hidden</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+    </Window.Resources>
+    <Border BorderThickness="2" BorderBrush="SteelBlue">
+        <Border BorderThickness="4" BorderBrush="CadetBlue">
+            <Border BorderThickness="1" BorderBrush="DarkSlateGray">
+                <Grid>
+                    <DockPanel Background="Black" LastChildFill="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <DockPanel DockPanel.Dock="Bottom" LastChildFill="True">
+                            <Button Content="Close" DockPanel.Dock="Right" Click="CloseButton_OnClick"></Button>
+                            <Button Content="Add" DockPanel.Dock="Right" Click="ToggleAddTagsButton_OnClick" Style="{StaticResource AddButton}"></Button>
+                            <Button Content="Remove" DockPanel.Dock="Right" Click="ToggleRemoveTagsButton_OnClick" Style="{StaticResource RemoveButton}"></Button>
+                            <DockPanel DockPanel.Dock="Left" LastChildFill="True">
+                                <Label Content="Tags" Style="{StaticResource TagsFieldLabel}"></Label>
+                                <TextBox Text="{Binding TagsList, UpdateSourceTrigger=PropertyChanged}"
+                                         TextChanged="TagsFieldTextBox_OnTextChanged"></TextBox>
+                            </DockPanel>
+                        </DockPanel>
+                        <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="20"
+                                CornerRadius="4" Style="{StaticResource CentralRegion}"
+                                BorderBrush="DimGray" BorderThickness="5"
+                                x:Name="TextBlockContainer">
+                            <TextBlock Text="{Binding LabelContent}">
+                            </TextBlock>
+                        </Border>
+                    </DockPanel>
+                    
+                    <Border VerticalAlignment="Top" HorizontalAlignment="Center" 
+                            Padding="6 2" Margin="4" Visibility="Collapsed"
+                            CornerRadius="2"
+                            BorderThickness="3" BorderBrush="DarkGoldenrod" Background="DimGray" 
+                            x:Name="Toast">
+                        <Label Style="{StaticResource ToastLabel}" Content="{Binding ToastLabelContent}"></Label>
+                    </Border>
+                </Grid>
+            </Border>
+        </Border>
+    </Border>
 </Window>

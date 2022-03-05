@@ -45,5 +45,10 @@ namespace Somewhere2
             return input;
         }
         #endregion
+
+        #region Tags
+        public static string[] SplitTags(string csv, char splitter = ',')
+            => csv.Split(splitter, StringSplitOptions.RemoveEmptyEntries).Select(t => t.Trim().ToLower()).Distinct().OrderBy(t => t).ToArray();
+        #endregion
     }
 }

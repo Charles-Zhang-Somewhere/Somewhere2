@@ -120,8 +120,6 @@ namespace Somewhere2.CLIApplication
                 scratchPad.Show();
             });
         }
-        string[] SplitTags(string csv, char splitter = ',')
-            => csv.Split(splitter).Select(t => t.Trim().ToLower()).Distinct().OrderBy(t => t).ToArray();
         #endregion
     }
 }
