@@ -12,6 +12,18 @@ namespace Somewhere2.ApplicationState
 {
     public class RuntimeData
     {
+        #region Constructor
+        public RuntimeData()
+        {
+            if (Singleton == null)
+                Singleton = this;
+            else
+            {
+                throw new InvalidOperationException("RuntimeData is already initialized! Singleton is not null.");
+            }
+        }
+        #endregion
+
         #region Settings and Temporary Data
         public ApplicationConfiguration Configuration { get; set; }
         public List<Recent> Recents { get; set; }
@@ -26,7 +38,9 @@ namespace Somewhere2.ApplicationState
         #region Global Contexts
         public RenderingContext RenderingContext { get; set; }
         public MainApplication MainGUIApplication { get; set; }
+        public WebHostInfo WebHostInfo { get; set; }
         public Dispatcher STADispatcher { get; set; }
+        public static RuntimeData Singleton { get; set; }
         #endregion
 
         #region Opened Database
