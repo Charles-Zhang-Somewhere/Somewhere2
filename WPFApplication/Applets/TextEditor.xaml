@@ -1,0 +1,14 @@
+﻿<Window x:Class="Somewhere2.WPFApplication.Applets.TextEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:Somewhere2.WPFApplication.Applets"
+        mc:Ignorable="d"
+        Title="Text Editor" Height="450" Width="800"
+        Closed="TextEditor_OnClosed"
+        DataContext="{Binding RelativeSource={RelativeSource self}}">
+    <Grid>
+        <TextBox Text="{Binding Text}" AcceptsReturn="True" AcceptsTab="False"></TextBox>
+    </Grid>
+</Window>

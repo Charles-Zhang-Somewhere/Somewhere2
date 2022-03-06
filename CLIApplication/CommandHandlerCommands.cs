@@ -78,9 +78,7 @@ namespace Somewhere2.CLIApplication
                     PrintRecent(arguments);
                     break;
                 case "setting":
-                    ColorfulPrintLine("This command will open an external editor.");
-                    Thread.Sleep(2000);
-                    FileService.EditConfigFile(RuntimeData);
+                    ShowEditConfigFile();
                     break;
                 case "stats":
                     ShowStats();

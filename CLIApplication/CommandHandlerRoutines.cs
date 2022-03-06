@@ -188,7 +188,20 @@ namespace Somewhere2.CLIApplication
             
             new MainApplication(RuntimeData).Run();
         }
-
+        private void ShowEditConfigFile()
+        {
+            Application.Current.Dispatcher.BeginInvoke(() =>
+            {
+                TextEditor textEditor = new TextEditor(new YamlDotNet.Serialization.Serializer().Serialize(RuntimeData.Configuration),
+                    text =>
+                    {
+                        RuntimeData.Configuration = new YamlDotNet.Serialization.Deserializer()
+                            .Deserialize<ApplicationConfiguration>(text);
+                            FileService.SaveConfig();
+                    });
+                textEditor.Show();
+            });
+        }
         private void ShowStats()
         {
             int tags = RuntimeData.Tags.Count();

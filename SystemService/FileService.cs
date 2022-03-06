@@ -7,7 +7,7 @@ using Somewhere2.ApplicationState;
 
 namespace Somewhere2.SystemService
 {
-    public class FileService
+    public static class FileService
     {
         private static string ApplicationDirectory
             => AppDomain.CurrentDomain.BaseDirectory;
@@ -15,33 +15,6 @@ namespace Somewhere2.SystemService
             => Path.Combine(ApplicationDirectory, "Somewhere2.config");
         private static string RecentFilePath
             => Path.Combine(ApplicationDirectory, "Somewhere2.recents");
-
-        private static FileSystemWatcher ConfigWatcher = null;
-        private static RuntimeData RuntimeReference = null;
-
-        public static void EditConfigFile(RuntimeData runtime)
-        {
-            RuntimeReference = runtime;
-            
-            new Process
-            {
-                StartInfo = new ProcessStartInfo(ConfigFilePath)
-                {
-                    UseShellExecute = true
-                }
-            }.Start();
-        }
-        private static void OnConfigChanged(object sender, FileSystemEventArgs e)
-        {
-            if (e.ChangeType != WatcherChangeTypes.Changed) return;
-            if (RuntimeReference != null)
-            {
-                Thread.Sleep(500);  // Wait for writing to finish
-                Console.WriteLine("Configuration file changed detected!");
-                Console.WriteLine("(Press Enter to return)");
-                RuntimeReference.Configuration = CheckConfigFile();
-            }
-        }
 
         public static ApplicationConfiguration CheckConfigFile()
         {
@@ -57,25 +30,9 @@ namespace Somewhere2.SystemService
                 configuration.InitializeDefault();
                 File.WriteAllText(ConfigFilePath, new YamlDotNet.Serialization.Serializer().Serialize(configuration));
             }
-            
-            if(ConfigWatcher != null) ConfigWatcher.Dispose();
-            ConfigWatcher = new FileSystemWatcher(Path.GetDirectoryName(ConfigFilePath));
-            ConfigWatcher.NotifyFilter = NotifyFilters.Attributes
-                                         | NotifyFilters.CreationTime
-                                         | NotifyFilters.DirectoryName
-                                         | NotifyFilters.FileName
-                                         | NotifyFilters.LastAccess
-                                         | NotifyFilters.LastWrite
-                                         | NotifyFilters.Security
-                                         | NotifyFilters.Size;
-            ConfigWatcher.Changed += OnConfigChanged;
-            ConfigWatcher.Filter = Path.GetFileName(ConfigFilePath);
-            ConfigWatcher.IncludeSubdirectories = false;
-            ConfigWatcher.EnableRaisingEvents = true;
 
             return configuration;
         }
-
         public static List<Recent> CheckRecentFile()
         {
             if (File.Exists(RecentFilePath))
@@ -91,6 +48,10 @@ namespace Somewhere2.SystemService
             }
         }
 
+        public static void SaveConfig()
+        {
+            File.WriteAllText(ConfigFilePath, new YamlDotNet.Serialization.Serializer().Serialize(RuntimeData.Singleton.Configuration));
+        }
         public static void UpdateRecentFile(List<Recent> runtimeDataRecents)
         {
             File.WriteAllText(RecentFilePath, new YamlDotNet.Serialization.Serializer().Serialize(runtimeDataRecents));

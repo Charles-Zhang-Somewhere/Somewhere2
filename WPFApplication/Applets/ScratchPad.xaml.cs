@@ -15,12 +15,10 @@ namespace Somewhere2.WPFApplication.Applets
         public ScratchPad()
         {
             InitializeComponent();
-
-            App = Application.Current as App;
+            
             IsAddingMode = true;
             LabelContent = DefaultTextAdd;
         }
-        private App App { get; }
         private const string DefaultTextAdd = "Drag Files Here to Tag";
         private const string DefaultTextRemove = "Drag Files Here to Untag";
         private string[] Tags => StringHelper.SplitTags(TagsList.Replace('<', ' '));
@@ -82,21 +80,6 @@ namespace Somewhere2.WPFApplication.Applets
             ((Storyboard)FindResource("animate")).Begin(Toast);
             IsDraggingOver = false;
         }
-        #endregion
-        
-        #region Data Binding
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        private bool SetField<TType>(ref TType field, TType value, [CallerMemberName] string propertyName = null)
-        {
-            if (EqualityComparer<TType>.Default.Equals(field, value)) return false;
-            field = value;
-            NotifyPropertyChanged(propertyName);
-            return true;
-        }
-        #endregion
-
         private void ToggleAddTagsButton_OnClick(object sender, RoutedEventArgs e)
         {
             IsAddingMode = true;
@@ -124,7 +107,21 @@ namespace Somewhere2.WPFApplication.Applets
             // Update text block
             UpdateTextBlock(LabelContent);
         }
-
+        #endregion
+        
+        #region Data Binding
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        private bool SetField<TType>(ref TType field, TType value, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<TType>.Default.Equals(field, value)) return false;
+            field = value;
+            NotifyPropertyChanged(propertyName);
+            return true;
+        }
+        #endregion
+        
         #region Helpers
         public void UpdateTextBlock(string markupString)
         {
