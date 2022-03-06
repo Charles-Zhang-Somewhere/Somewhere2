@@ -17,8 +17,6 @@ namespace Somewhere2.CLIApplication
         {
             CurrentWorkingDirectory = Directory.GetCurrentDirectory();
             RuntimeData = runtimeData;
-            
-            PrepareFileServices();
         }
         #endregion
         

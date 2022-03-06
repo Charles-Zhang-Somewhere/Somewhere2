@@ -132,7 +132,8 @@
 </div>
 
 <div class="page" id="MainPage">
-    <strong>Projects</strong>
+    <strong>Notes</strong>
+    <p><em>Including virtual notes and file system entries containing notes.</em></p>
     
     @{
         <table id="main-table" class="display">
@@ -147,10 +148,10 @@
             @for(int i = 0; i < model.Items.Count; i++)
             {
                 TagItem item = model.Items[i];
-                if (item.Type == ItemType.Note)
+                if (item.Type == ItemType.Note || !string.IsNullOrWhiteSpace(item.Notes))
                 {
                     <tr>
-                        <td onclick="showModal(i)">@item.Path</td>
+                        <td onclick="showModal(@i)">@item.Path</td>
                         <td>@item.Notes</td>
                         <td>@StringHelper.DisplayTags(item.Tags)</td>
                     </tr>   

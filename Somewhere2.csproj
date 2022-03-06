@@ -33,6 +33,8 @@
       <EmbeddedResource Include="Assets\Fonts\Roboto\Roboto-Regular.ttf" />
       <EmbeddedResource Include="Assets\Sounds\Intro.wav" />
       <None Remove="WebHost\RazorTemplates\GetNotesTemplate.cshtml" />
+      <EmbeddedResource Include="Documentation\Advanced.txt" />
+      <EmbeddedResource Include="Documentation\Commands\inspect.txt" />
       <EmbeddedResource Include="WebHost\RazorTemplates\GetNotesTemplate.cshtml" />
     </ItemGroup>
 

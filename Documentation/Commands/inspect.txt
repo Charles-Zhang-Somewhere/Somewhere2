@@ -1,0 +1,2 @@
+﻿<Blue>inspect</>: <Body>[Advanced] Print raw content of current database file.</>
+  <Green>inspect</> Print raw content of current database file.

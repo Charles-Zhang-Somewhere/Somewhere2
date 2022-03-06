@@ -35,6 +35,9 @@ namespace Somewhere2.CLIApplication
                 case "exit":
                     ShouldExit = true;
                     break;
+                case "inspect":
+                    InspectDatabaseContent();
+                    break;
                 case "ls":
                     PrintDirectory();
                     break;

@@ -66,6 +66,13 @@ namespace Somewhere2.CLIApplication
         private void HideConsole()
             => WindowHelper.HideConsole();
 
+        private void InspectDatabaseContent()
+        {
+            if (RuntimeData.DatabasePath != null && File.Exists(RuntimeData.DatabasePath))
+            {
+                ColorfulPrint(File.ReadAllText(RuntimeData.DatabasePath));
+            }
+        }
         private void MakeNotes(string[] arguments)
         {
             // Parse arguments
@@ -164,11 +171,6 @@ namespace Somewhere2.CLIApplication
             ColorfulPrintLine($"<Blue>{RuntimeData.DatabaseName}</> ({databasePath})");
             string text = Helpers.ReadTextResource("Somewhere2.Documentation.NewDatabase.txt");
             ColorfulPrintLine(text);
-        }
-        private void PrepareFileServices()
-        {
-            RuntimeData.Configuration = FileService.CheckConfigFile();
-            RuntimeData.Recents = FileService.CheckRecentFile();
         }
         private void RunGUI()
         {

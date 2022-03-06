@@ -45,10 +45,11 @@ namespace Somewhere2.ApplicationState
         #endregion
 
         #region Opened Database
-        public string DatabaseName { get; set; }
+        public string DatabasePath { get; private set; }
+        public string DatabaseName { get; private set; }
         public bool Loaded => SystemEntries != null || Notes != null;
-        public Dictionary<string, TagItem> SystemEntries { get; set; }
-        public List<TagItem> Notes { get; set; }
+        public Dictionary<string, TagItem> SystemEntries { get; private set; }
+        public List<TagItem> Notes { get; private set; }
         #endregion
     }
 }

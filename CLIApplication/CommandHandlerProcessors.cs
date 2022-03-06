@@ -133,6 +133,7 @@ namespace Somewhere2.CLIApplication
                 else
                     ColorfulPrint($"<Orange>{tag}</>");
             }
+            Console.WriteLine();
         }
         #endregion
     }

@@ -38,11 +38,24 @@ namespace Somewhere2.ApplicationState
             SystemEntries = database.SystemEntries.ToDictionary(i => i.Path, i => i);
             Notes = database.Notes;
             DatabaseName = GetDatabaseName(filePath);
+            DatabasePath = filePath;
         }
         public void Remove(string path)
         {
             if (SystemEntries.ContainsKey(path))
                 SystemEntries.Remove(path);
+            
+            SaveDatabaseFile();
+        }
+        private void SaveDatabaseFile()
+        {
+            Database database = new Database()
+            {
+                Notes = Notes,
+                SystemEntries = SystemEntries.Values.OrderBy(e => e.Path).ToList()
+            };
+            string yaml = new YamlDotNet.Serialization.Serializer().Serialize(database);
+            File.WriteAllText(DatabasePath, yaml);
         }
         public void UpdateSystemEntry(string path, string[] tags, string note = null)
         {
@@ -52,6 +65,8 @@ namespace Somewhere2.ApplicationState
                 if(note != null) SystemEntries[path].Notes = note;
             }
             else SystemEntries[path] = new TagItem(path, tags ?? new string[]{}, note ?? string.Empty);
+            
+            SaveDatabaseFile();
         }
         /// <param name="tags">Empty to set to empty, null to ignore</param>
         public void UpdateItem(string path, string note, string[] tags)
@@ -61,6 +76,8 @@ namespace Somewhere2.ApplicationState
                 Notes.Add(new TagItem(path, tags ?? new string []{}, note ?? string.Empty));    // Always add new notes since there is no name key
             }
             else UpdateSystemEntry(path, tags, note);
+            
+            SaveDatabaseFile();
         }
         #endregion
         

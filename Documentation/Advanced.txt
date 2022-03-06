@@ -1,0 +1,4 @@
+﻿<Blue>Those commands will not be shown in welcome text.</>
+<White>General Purpose</>
+<White>Database Specific</>
+**Database Commands**: <Green>inspect</>
