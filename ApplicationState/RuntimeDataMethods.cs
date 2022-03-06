@@ -57,19 +57,8 @@ namespace Somewhere2.ApplicationState
             string yaml = new YamlDotNet.Serialization.Serializer().Serialize(database);
             File.WriteAllText(DatabasePath, yaml);
         }
-        public void UpdateSystemEntry(string path, string[] tags, string note = null)
-        {
-            if (SystemEntries.ContainsKey(path))
-            {
-                if(tags != null) SystemEntries[path].Tags = tags;
-                if(note != null) SystemEntries[path].Notes = note;
-            }
-            else SystemEntries[path] = new TagItem(path, tags ?? new string[]{}, note ?? string.Empty);
-            
-            SaveDatabaseFile();
-        }
         /// <param name="tags">Empty to set to empty, null to ignore</param>
-        public void UpdateItem(string path, string note, string[] tags)
+        public void UpdateItem(string path, string note = null, string[] tags = null)
         {
             if (path.StartsWith(StringConstants.NoteURLProtocol))
             {
@@ -87,6 +76,17 @@ namespace Somewhere2.ApplicationState
             string filename = Path.GetFileName(fullPath);
             string name = filename.Substring(0, filename.IndexOf(StringConstants.DatabaseSuffix, StringComparison.InvariantCulture));
             return name;
+        }
+        private void UpdateSystemEntry(string path, string[] tags, string note = null)
+        {
+            if (SystemEntries.ContainsKey(path))
+            {
+                if(tags != null) SystemEntries[path].Tags = tags;
+                if(note != null) SystemEntries[path].Notes = note;
+            }
+            else SystemEntries[path] = new TagItem(path, tags ?? new string[]{}, note ?? string.Empty);
+            
+            SaveDatabaseFile();
         }
         #endregion
     }

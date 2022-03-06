@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media.Animation;
+using Somewhere2.ApplicationState;
 
 namespace Somewhere2.WPFApplication.Applets
 {
@@ -79,6 +80,7 @@ namespace Somewhere2.WPFApplication.Applets
             }
             
             ((Storyboard)FindResource("animate")).Begin(Toast);
+            IsDraggingOver = false;
         }
         #endregion
         
@@ -140,7 +142,10 @@ namespace Somewhere2.WPFApplication.Applets
         #region Routines
         private void RegisterItemTags(string[] paths, string[] tags)
         {
-            throw new System.NotImplementedException();
+            foreach (string path in paths)
+            {
+                RuntimeData.Singleton.UpdateItem(path, null, tags);
+            }
         }
         #endregion
     }
