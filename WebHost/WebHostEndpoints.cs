@@ -13,7 +13,19 @@ namespace Somewhere2.WebHost
         #region Accesor
         private static RuntimeData Runtime => RuntimeData.Singleton;
         #endregion
-        
+
+        #region Endpoints
+        public static async Task EndpointGetItems(HttpContext context)
+        {
+            string tempalte = GetTemplate("Somewhere2.WebHost.RazorTemplates.GetItemsTemplate.cshtml");
+            GetItemsTemplateModel model = new GetItemsTemplateModel()
+            {
+                Items = Runtime.AllItems.ToList()
+            };
+            string html = Engine.Razor.RunCompile(tempalte, "GetItems", typeof(GetItemsTemplateModel), model);
+            
+            await context.Response.WriteAsync(html);
+        }
         public static async Task EndpointGetNotes(HttpContext context)
         {
             string tempalte = GetTemplate("Somewhere2.WebHost.RazorTemplates.GetNotesTemplate.cshtml");
@@ -25,6 +37,7 @@ namespace Somewhere2.WebHost
             
             await context.Response.WriteAsync(html);
         }
+        #endregion
 
         #region Routines
 

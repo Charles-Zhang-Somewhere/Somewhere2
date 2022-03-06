@@ -7,6 +7,7 @@
         public bool ShouldLog { get; set; }
 
         #region Accessor - Endpoints
+        public string ItemsURL => $"{Address}/Items";
         public string NotesURL => $"{Address}/Notes";
         #endregion
     }

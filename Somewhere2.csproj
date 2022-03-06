@@ -35,6 +35,7 @@
       <None Remove="WebHost\RazorTemplates\GetNotesTemplate.cshtml" />
       <EmbeddedResource Include="Documentation\Advanced.txt" />
       <EmbeddedResource Include="Documentation\Commands\inspect.txt" />
+      <EmbeddedResource Include="WebHost\RazorTemplates\GetItemsTemplate.cshtml" />
       <EmbeddedResource Include="WebHost\RazorTemplates\GetNotesTemplate.cshtml" />
     </ItemGroup>
 

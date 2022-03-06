@@ -47,6 +47,7 @@ namespace Somewhere2.WebHost
             // Automatic endpoints
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGet("/Items", WebHostEndpoints.EndpointGetItems);
                 endpoints.MapGet("/Notes", WebHostEndpoints.EndpointGetNotes);
                 
                 // Blazor

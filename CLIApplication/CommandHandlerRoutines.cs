@@ -132,7 +132,17 @@ namespace Somewhere2.CLIApplication
             => Directory.Exists(Path.GetDirectoryName(shorthand))
                 ? shorthand
                 : Path.Combine(CurrentWorkingDirectory, shorthand);
-        private void OpenBrowser()
+        private void ShowItems()
+        {
+            new Process
+            {
+                StartInfo = new ProcessStartInfo(RuntimeData.WebHostInfo.ItemsURL)
+                {
+                    UseShellExecute = true
+                }
+            }.Start();
+        }
+        private void ShowNotes()
         {
             new Process
             {

@@ -38,6 +38,9 @@ namespace Somewhere2.CLIApplication
                 case "inspect":
                     InspectDatabaseContent();
                     break;
+                case "items":
+                    ShowItems();
+                    break;
                 case "ls":
                     PrintDirectory();
                     break;
@@ -45,7 +48,7 @@ namespace Somewhere2.CLIApplication
                     MakeNotes(arguments);
                     break;
                 case "notes":
-                    OpenBrowser();
+                    ShowNotes();
                     break;
                 case "open":
                     TryOpen(arguments[0]);
