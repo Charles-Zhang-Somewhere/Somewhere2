@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
@@ -11,11 +11,14 @@
         <UseWPF>true</UseWPF>
         <DisableWinExeOutputInference>true</DisableWinExeOutputInference>
         <StartupObject>Somewhere2.Program</StartupObject>
-        <UseRazorSourceGenerator>false</UseRazorSourceGenerator>
+
+        <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == ''">win-x64</RuntimeIdentifier>
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="CefSharp.Wpf.NETCore" Version="98.1.210" />
       <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
+      <PackageReference Include="RazorEngine.NetCore" Version="3.1.0" />
       <PackageReference Include="SFML.Net" Version="2.5.0" />
       <PackageReference Include="Terminal.Gui" Version="1.4.0" />
       <PackageReference Include="YamlDotNet.NetCore" Version="1.0.0" />
@@ -28,30 +31,26 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Assets\Fonts\Roboto\Roboto-Regular.ttf" />
       <EmbeddedResource Include="Assets\Fonts\Roboto\Roboto-Regular.ttf" />
-      <None Remove="Assets\Sounds\Intro.wav" />
       <EmbeddedResource Include="Assets\Sounds\Intro.wav" />
-      <None Remove="Documentation\Welcome.txt" />
+      <None Remove="WebHost\RazorTemplates\GetNotesTemplate.cshtml" />
+      <EmbeddedResource Include="WebHost\RazorTemplates\GetNotesTemplate.cshtml" />
     </ItemGroup>
 
     <ItemGroup>
       <EmbeddedResource Include="Documentation\Commands\cd.txt" />
       <EmbeddedResource Include="Documentation\Commands\help.txt" />
+      <EmbeddedResource Include="Documentation\Commands\last.txt" />
       <EmbeddedResource Include="Documentation\Commands\move.txt" />
       <EmbeddedResource Include="Documentation\Commands\note.txt" />
       <EmbeddedResource Include="Documentation\Commands\pwd.txt" />
       <EmbeddedResource Include="Documentation\Commands\open.txt" />
       <EmbeddedResource Include="Documentation\Commands\recent.txt" />
       <EmbeddedResource Include="Documentation\Commands\setting.txt" />
+      <EmbeddedResource Include="Documentation\Commands\stats.txt" />
       <EmbeddedResource Include="Documentation\Commands\tag.txt" />
       <EmbeddedResource Include="Documentation\InteractiveTag.txt" />
       <EmbeddedResource Include="Documentation\NewDatabase.txt" />
       <EmbeddedResource Include="Documentation\Welcome.txt" />
     </ItemGroup>
-
-    <ItemGroup>
-      <ApplicationDefinition Remove="App.xaml" />
-    </ItemGroup>
-
 </Project>

@@ -30,6 +30,17 @@ namespace Somewhere2
         
         private static void CreateHybridHost()
         {
+            void OpenBrowser()
+            {
+                new Process
+                {
+                    StartInfo = new ProcessStartInfo(RuntimeData.Singleton.WebHostInfo.Address)
+                    {
+                        UseShellExecute = true
+                    }
+                }.Start();
+            }
+            
             // Configure web host explicitly
             int port = NetworkHelper.FindFreeTcpPort();
             string hostAddress = $"http://localhost:{port}";
@@ -38,7 +49,8 @@ namespace Somewhere2
             {
                 Port = port,
                 Address = hostAddress,
-                ShouldLog = shouldLog
+                ShouldLog = shouldLog,
+                URL = hostAddress
             };
             // Initialize application data
             RuntimeData runtimeData = new RuntimeData()
@@ -46,28 +58,12 @@ namespace Somewhere2
                 STADispatcher = Dispatcher.CurrentDispatcher,
                 WebHostInfo = webHostInfo
             };
-            
-            // Debug
-            OpenBrowser();
-            
+
             SetupAndRunWebHost(webHostInfo);
             SetupAndRunCommandHandler(runtimeData);
             SetupAndRunWPFApplication(runtimeData); // Application will stall here as the main thread
         }
 
-        #region Helper
-        private static void OpenBrowser()
-        {
-            new Process
-            {
-                StartInfo = new ProcessStartInfo(RuntimeData.Singleton.WebHostInfo.Address)
-                {
-                    UseShellExecute = true
-                }
-            }.Start();
-        }
-        #endregion
-        
         #region Routines
         private static void SetupAndRunWebHost(WebHostInfo webHostInfo)
         {
@@ -80,6 +76,8 @@ namespace Somewhere2
                     .ConfigureWebHostDefaults(webBuilder =>
                     {
                         webBuilder.UseUrls(webHostInfo.Address);
+                        webBuilder.UseWebRoot("wwwroot");
+                        webBuilder.UseKestrel();
                         webBuilder.UseStartup<Startup>();
                     })
                     .ConfigureLogging((context, logging) =>

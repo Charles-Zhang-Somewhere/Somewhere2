@@ -1,6 +1,6 @@
 ﻿<Blue>Welcome to Somewhere 2!</>
 **Navigation Commands**: <Green>pwd</>, <Green>cd</>, <Green>ls</>
-**Database Commands**: <Green>open (create, new)</>
+**Database Commands**: <Green>last</>, <Green>open/create/new</>, <Green>browse</>, <Green>last</>
 **Window Commands**: <Green>gui</>, <Green>tui</>
 **Other Commands**: <Green>exit</>, <Green>help</>, <Green>setting</>, <Green>recent</>
 (Command names are not case-sensitive)

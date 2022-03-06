@@ -1,0 +1,2 @@
+﻿<Blue>last</>: <Body>Resume editing of the last database file; Change cwd to database file folder.</>
+  <Green>last</> Open last database file if available.

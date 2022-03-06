@@ -49,6 +49,7 @@ namespace Somewhere2
         #region Tags
         public static string[] SplitTags(string csv, char splitter = ',')
             => csv.Split(splitter, StringSplitOptions.RemoveEmptyEntries).Select(t => t.Trim().ToLower()).Distinct().OrderBy(t => t).ToArray();
+        public static string DisplayTags(string[] itemTags) => string.Join(", ", itemTags);
         #endregion
     }
 }

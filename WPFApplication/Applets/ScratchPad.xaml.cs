@@ -25,15 +25,15 @@ namespace Somewhere2.WPFApplication.Applets
         private string[] Tags => StringHelper.SplitTags(TagsList.Replace('<', ' '));
         
         #region Public View Properties
-        private string _LabelContent;
+        private string _LabelContent = string.Empty;
         public string LabelContent { get => _LabelContent; set => SetField(ref _LabelContent, value); }
-        private string _TagsList;
+        private string _TagsList = string.Empty;
         public string TagsList { get => _TagsList; set => SetField(ref _TagsList, value); }
         private string _ToastLabelContent;
         public string ToastLabelContent { get => _ToastLabelContent; set => SetField(ref _ToastLabelContent, value); }
-        private bool _IsAddingMode;
+        private bool _IsAddingMode = true;
         public bool IsAddingMode { get => _IsAddingMode; set => SetField(ref _IsAddingMode, value); }
-        private bool _IsDraggingOver;
+        private bool _IsDraggingOver = false;
         public bool IsDraggingOver { get => _IsDraggingOver; set => SetField(ref _IsDraggingOver, value); }
         #endregion
 

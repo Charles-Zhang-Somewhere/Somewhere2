@@ -28,7 +28,7 @@ namespace Somewhere2.CLIApplication
             }
             else tags = arguments[1];
             
-            RuntimeData.Update(normalizedPath, StringHelper.SplitTags(tags));
+            RuntimeData.UpdateSystemEntry(normalizedPath, StringHelper.SplitTags(tags));
         }
 
         private void InteractiveTag()

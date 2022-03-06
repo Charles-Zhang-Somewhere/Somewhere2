@@ -56,6 +56,9 @@ namespace Somewhere2.CLIApplication
                     case "Orange":
                         Console.ForegroundColor = ConsoleColor.DarkYellow;
                         break;
+                    case "Yellow":
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        break;
                     case "White":
                         Console.ForegroundColor = ConsoleColor.White;
                         break;

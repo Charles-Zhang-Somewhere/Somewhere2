@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using Somewhere2.ApplicationState;
 using Somewhere2.Constants;
@@ -38,23 +39,31 @@ namespace Somewhere2.CLIApplication
                     PrintDirectory();
                     break;
                 case "note":
-                    string name = arguments[0];
-                    
+                    MakeNotes(arguments);
+                    break;
+                case "notes":
+                    OpenBrowser();
                     break;
                 case "open":
-                {
-                    string shorthandPath = arguments[0];
-                    string normalizedPath = NormalizeFilePath(shorthandPath);
-                    string fullPath = CheckAppendSuffix(normalizedPath, StringConstants.DatabaseSuffix);
-                    OpenDatabaseFile(fullPath);
+                    TryOpen(arguments[0]);
                     break;
-                }
                 case "gui":
                     RunGUI();
                     break;
                 case "help":
                     string text = Helpers.ReadTextResource($"Somewhere2.Documentation.Commands.{arguments[0]}.txt");
                     ColorfulPrintLine(text);
+                    break;
+                case "last":
+                    int index = RuntimeData.Recents.FindIndex(r => r.Annotation == RecentType.Database);
+                    if (index >= 0)
+                    {
+                        string databasePath = RuntimeData.Recents[index].Value;
+                        OpenDatabaseFile(databasePath);
+                        CurrentWorkingDirectory = Path.GetDirectoryName(databasePath);
+                    }
+                    else
+                        ColorfulPrintLine("No record is available!", "Warning");
                     break;
                 case "pwd":
                     ColorfulPrintLine(CurrentWorkingDirectory);
@@ -68,7 +77,7 @@ namespace Somewhere2.CLIApplication
                     FileService.EditConfigFile(RuntimeData);
                     break;
                 case "stats":
-                    ShowStatsWindow();
+                    ShowStats();
                     break;
                 case "sp":
                 case "scratchpad":

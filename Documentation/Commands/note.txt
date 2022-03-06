@@ -1,2 +1,5 @@
-﻿<Blue>note</>: <Body>Create a new note item.</>
-  <Green>note</> <Gray>item name</> Name for the note item.
+﻿<Blue>note</>: <Body>Add notes to file system entry, or create a new (virtual) note item.</>
+  <Green>note</> Enter interactive session.
+  <Green>note</> <Gray>item name</> Start making notes for the named item; Enter interactive session for the rest of information.
+  <Green>note</> <Gray>itemname</> <Gray>note</> Start making notes for the named item; Enter interactive session for tag information.
+  <Green>note</> <Gray>itemname</> <Gray>note</> <Gray>tags</> Make note for the named item with given tags.

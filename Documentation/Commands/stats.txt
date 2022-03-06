@@ -1,0 +1,2 @@
+﻿<Blue>stats</>: <Body>Show statistics of current connected database.</>
+  <Green>stats</> Print database statistics.
