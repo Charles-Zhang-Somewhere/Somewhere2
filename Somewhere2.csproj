@@ -11,15 +11,10 @@
         <UseWPF>true</UseWPF>
         <DisableWinExeOutputInference>true</DisableWinExeOutputInference>
         <StartupObject>Somewhere2.Program</StartupObject>
-        <MvcRazorCompileOnPublish>true</MvcRazorCompileOnPublish>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
-      <PackageReference Include="Microsoft.AspNetCore.Components.Analyzers" Version="7.0.0-preview.1.22109.13" />
-      <PackageReference Include="Microsoft.AspNetCore.Mvc.Analyzers" Version="3.0.0-preview3-19153-02" />
-        <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" ><ExcludeAssets>Build</ExcludeAssets></PackageReference>
-      <PackageReference Include="Microsoft.NET.Sdk.Razor" Version="5.0.0-preview.8.20414.8" />
       <PackageReference Include="RazorEngine.NetCore" Version="3.1.0" />
       <PackageReference Include="SFML.Net" Version="2.5.0" />
       <PackageReference Include="Terminal.Gui" Version="1.4.0" />
@@ -56,10 +51,5 @@
       <EmbeddedResource Include="Documentation\InteractiveTag.txt" />
       <EmbeddedResource Include="Documentation\NewDatabase.txt" />
       <EmbeddedResource Include="Documentation\Welcome.txt" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="WebHost\Pages\_Host.cshtml" />
-      <Content Include="WebHost\Pages\_Host.cshtml" />
     </ItemGroup>
 </Project>
