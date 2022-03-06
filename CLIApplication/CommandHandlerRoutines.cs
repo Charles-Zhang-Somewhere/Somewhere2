@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -126,11 +127,13 @@ namespace Somewhere2.CLIApplication
                 : Path.Combine(CurrentWorkingDirectory, shorthand);
         private void OpenBrowser()
         {
-            Application.Current.Dispatcher.BeginInvoke(() =>
+            new Process
             {
-                Browser browser = new Browser(RuntimeData.WebHostInfo.NotesURL);
-                browser.Show();
-            });
+                StartInfo = new ProcessStartInfo(RuntimeData.WebHostInfo.NotesURL)
+                {
+                    UseShellExecute = true
+                }
+            }.Start();
         }
         private void OpenDatabaseFile(string filePath)
         {

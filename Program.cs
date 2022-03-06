@@ -30,17 +30,6 @@ namespace Somewhere2
         
         private static void CreateHybridHost()
         {
-            void OpenBrowser()
-            {
-                new Process
-                {
-                    StartInfo = new ProcessStartInfo(RuntimeData.Singleton.WebHostInfo.Address)
-                    {
-                        UseShellExecute = true
-                    }
-                }.Start();
-            }
-            
             // Configure web host explicitly
             int port = NetworkHelper.FindFreeTcpPort();
             string hostAddress = $"http://localhost:{port}";
