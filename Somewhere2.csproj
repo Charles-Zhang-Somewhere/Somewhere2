@@ -20,36 +20,4 @@
       <PackageReference Include="Terminal.Gui" Version="1.4.0" />
       <PackageReference Include="YamlDotNet.NetCore" Version="1.0.0" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Assets\Sounds" />
-      <Folder Include="CLIApplication\Parts" />
-      <Folder Include="WPFApplication\Components" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Include="Assets\Fonts\Roboto\Roboto-Regular.ttf" />
-      <EmbeddedResource Include="Assets\Sounds\Intro.wav" />
-      <EmbeddedResource Include="Documentation\Advanced.txt" />
-      <EmbeddedResource Include="Documentation\Commands\inspect.txt" />
-      <EmbeddedResource Include="WebHost\RazorTemplates\GetItemsTemplate.cshtml" />
-      <EmbeddedResource Include="WebHost\RazorTemplates\GetNotesTemplate.cshtml" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Include="Documentation\Commands\cd.txt" />
-      <EmbeddedResource Include="Documentation\Commands\help.txt" />
-      <EmbeddedResource Include="Documentation\Commands\last.txt" />
-      <EmbeddedResource Include="Documentation\Commands\move.txt" />
-      <EmbeddedResource Include="Documentation\Commands\note.txt" />
-      <EmbeddedResource Include="Documentation\Commands\pwd.txt" />
-      <EmbeddedResource Include="Documentation\Commands\open.txt" />
-      <EmbeddedResource Include="Documentation\Commands\recent.txt" />
-      <EmbeddedResource Include="Documentation\Commands\setting.txt" />
-      <EmbeddedResource Include="Documentation\Commands\stats.txt" />
-      <EmbeddedResource Include="Documentation\Commands\tag.txt" />
-      <EmbeddedResource Include="Documentation\InteractiveTag.txt" />
-      <EmbeddedResource Include="Documentation\NewDatabase.txt" />
-      <EmbeddedResource Include="Documentation\Welcome.txt" />
-    </ItemGroup>
 </Project>

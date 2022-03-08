@@ -1,0 +1,12 @@
+# Folders
+Assets
+Publish
+
+# Building
+bin/
+obj/
+/packages/
+
+# Rider
+riderModule.iml
+/_ReSharper.Caches/

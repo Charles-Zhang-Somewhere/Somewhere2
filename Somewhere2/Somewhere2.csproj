@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <Title>Somewhere 2</Title>
+        <Authors>Charles Zhang</Authors>
+        <PackageProjectUrl>https://github.com/Charles-Zhang-Somewhere/Somewhere2</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Charles-Zhang-Somewhere/Somewhere2</RepositoryUrl>
+        <ApplicationIcon>Icon.ico</ApplicationIcon>
+        <UseWPF>true</UseWPF>
+        <DisableWinExeOutputInference>true</DisableWinExeOutputInference>
+        <StartupObject>Somewhere2.Program</StartupObject>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="SFML.Net" Version="2.5.0" />
+        <PackageReference Include="Terminal.Gui" Version="1.4.0" />
+        <PackageReference Include="YamlDotNet.NetCore" Version="1.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Assets\Fonts\Roboto\Roboto-Regular.ttf" />
+      <EmbeddedResource Include="Assets\Sounds\Intro.wav" />
+      <EmbeddedResource Include="Documentation\Advanced.txt" />
+      <EmbeddedResource Include="Documentation\Commands\cd.txt" />
+      <EmbeddedResource Include="Documentation\Commands\help.txt" />
+      <EmbeddedResource Include="Documentation\Commands\inspect.txt" />
+      <EmbeddedResource Include="Documentation\Commands\last.txt" />
+      <EmbeddedResource Include="Documentation\Commands\move.txt" />
+      <EmbeddedResource Include="Documentation\Commands\note.txt" />
+      <EmbeddedResource Include="Documentation\Commands\open.txt" />
+      <EmbeddedResource Include="Documentation\Commands\pwd.txt" />
+      <EmbeddedResource Include="Documentation\Commands\recent.txt" />
+      <EmbeddedResource Include="Documentation\Commands\setting.txt" />
+      <EmbeddedResource Include="Documentation\Commands\stats.txt" />
+      <EmbeddedResource Include="Documentation\Commands\tag.txt" />
+      <EmbeddedResource Include="Documentation\InteractiveTag.txt" />
+      <EmbeddedResource Include="Documentation\NewDatabase.txt" />
+      <EmbeddedResource Include="Documentation\Welcome.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Somewhere2.Shared\Somewhere2.Shared.csproj" />
+      <ProjectReference Include="..\Somewhere2.WebHost\Somewhere2.WebHost.csproj" />
+    </ItemGroup>
+
+</Project>

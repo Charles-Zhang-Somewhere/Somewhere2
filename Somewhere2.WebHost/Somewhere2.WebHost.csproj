@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <OutputType>Library</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="RazorEngine.NetCore" Version="3.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Somewhere2.Shared\Somewhere2.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="Components\App.razor" />
+      <None Include="Components\Index.razor" />
+      <None Include="Components\MainLayout.razor" />
+      <None Include="Components\_Imports.razor" />
+      <None Include="Pages\_Host.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="RazorTemplates\GetItemsTemplate.cshtml.ignore" />
+      <EmbeddedResource Include="RazorTemplates\GetNotesTemplate.cshtml.ignore" />
+    </ItemGroup>
+
+</Project>

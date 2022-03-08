@@ -1,0 +1,214 @@
+@using System
+@using System.Collections
+@using System.Collections.Generic
+@using System.Diagnostics.Tracing
+@using System.IO
+@using System.Linq
+@using System.Text.RegularExpressions
+@using Somewhere2
+@using Somewhere2.Shared
+@using Somewhere2.WebHost.RazorTemplates
+@using YamlDotNet.Core.Tokens
+@{GetNotesTemplateModel model = Model;}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Notes</title>
+    
+    <!--Libraries-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+
+    <style>
+        /*Text Highlights*/
+        span.ProjectLabel {
+            color: lightcoral;
+        }
+        span.FeatureLabel {
+            color: mediumpurple;
+        }
+        span.StoryLabel {
+            color: lightskyblue;
+        }
+        /*Text Highlights*/
+        span.RootTaskProjectLabel {
+            color: indianred;
+        }
+        span.RootTaskFeatureLabel {
+            color: rebeccapurple;
+        }
+        span.RootTaskStoryLabel {
+            color: royalblue;
+        }
+        /*Text Highlights*/
+        span.IDLink {
+            color: steelblue;
+        }
+        span.Tag {
+            color: steelblue;
+        }
+        
+        /*Table*/
+        #custom-preface table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+          table-layout: auto; 
+        }
+        #custom-preface td,
+        #custom-preface th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+        #custom-preface tr:nth-child(even) {
+          background-color: #dddddd;
+        }
+        
+        /*Modal Box*/
+        /* The Modal (background) */
+        div.modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        /* Modal Content */
+        div.modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-height: 80%;
+            overflow: auto;
+        }
+        /* The Close Button */
+        span.close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        span.close:hover,
+        span.close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+@{
+    // C# Functions
+    
+}
+
+<!--Hidden Modal Data-->
+<div>
+    <!-- The Modals -->
+    @for(int i = 0; i < model.Items.Count; i ++)
+    {
+        TagItem item = model.Items[i];
+        <div id="popupModal-@i" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2>@item.Path</h2>
+                <p>@item.Notes</p>
+                <p><em>@StringHelper.DisplayTags(item.Tags)</em></p>
+            </div>
+    
+        </div>   
+    }
+</div>
+
+<div class="page" id="MainPage">
+    <strong>Notes</strong>
+    <p><em>Including virtual notes and file system entries containing notes.</em></p>
+    
+    @{
+        <table id="main-table" class="display">
+            <thead>
+            <tr>
+                <th>Path</th>
+                <th>Content</th>
+                <th>Tags</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for(int i = 0; i < model.Items.Count; i++)
+            {
+                TagItem item = model.Items[i];
+                if (item.Type == ItemType.Note || !string.IsNullOrWhiteSpace(item.Notes))
+                {
+                    <tr>
+                        <td onclick="showModal(@i)">@item.Path</td>
+                        <td>@item.Notes</td>
+                        <td>@StringHelper.DisplayTags(item.Tags)</td>
+                    </tr>   
+                }
+            }
+            </tbody>
+        </table>
+    }
+</div>
+
+<!--Libraries-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+
+<!--Global Variables-->
+<script>
+var currentModal = null;
+</script>
+
+<!--Helper Functions-->
+<script>
+function showModal(index) {
+    if (currentModal) {
+        closeModal()
+    }
+    
+    currentModal = document.getElementById("popupModal-" + index);
+    currentModal.style.display = "block";
+}
+function closeModal() {
+    currentModal.style.display = "none";
+    currentModal = null
+}
+function search(item) { // Search in main table
+    let mainTable = tablesList['main-table'];
+    mainTable.search(item);
+    mainTable.draw();
+}
+</script>
+
+<!--Scripts-->
+<script>
+// Document Ready
+$(document).ready( function () {
+    // Sow table
+    let options = {
+        pageLength: 100
+    };            
+    let table = $(`#main-table`).DataTable(options);
+} );
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target === currentModal) {
+    currentModal.style.display = "none";
+  }
+}
+</script>
+</body>
+</html>
